@@ -1,0 +1,1144 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 Anime Calendar</title>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', cursive, sans-serif;
+      overflow: hidden;
+    }
+
+    html, body, .page-wrapper {
+      height: 100%;
+      width: 100%;
+    }
+
+    .page-wrapper {
+      position: relative;
+      overflow: auto;
+    }
+
+    /* Welcome Page */
+    .welcome-page {
+      background: url("bg.jpg") no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      animation: gradientShift 70s ease infinite;
+      background-size: 200% 200%;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Audio Controls */
+    .audio-controls {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .audio-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .volume-control {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 25px;
+      padding: 8px 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .volume-slider {
+      width: 80px;
+      height: 5px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: linear-gradient(to right, #FF69B4, #FF1493);
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border: 2px solid #FF69B4;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    /* Welcome Content */
+    .welcome-content {
+      text-align: center;
+      animation: fadeInUp 1s ease;
+      z-index: 10;
+    }
+
+    .year-display {
+      font-size: 120px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+      margin: 0;
+      animation: bounce 2s infinite;
+    }
+
+    .welcome-text {
+      font-size: 36px;
+      color: white;
+      margin: 20px 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .wish-text {
+      font-size: 24px;
+      color: #FFF5F7;
+      margin: 10px 0 40px 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .enter-btn {
+      background: linear-gradient(135deg, #FF69B4, #FF1493);
+      color: white;
+      border: none;
+      padding: 18px 50px;
+      font-size: 24px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 20, 147, 0.4);
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .enter-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(255, 20, 147, 0.5);
+    }
+
+    /* Month Selection Page */
+    .month-page {
+      background: url("img2.jpg") no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100%;
+      width: 100%;
+      display: none;
+      padding: 40px 20px;
+      animation: gradientShift 30s ease infinite;
+      background-size: 200% 200%;
+    }
+
+    .month-page.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .month-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      border: 3px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .month-card:hover {
+      transform: translateY(-8px) rotate(2deg);
+      box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4), 0 0 30px rgba(138, 43, 226, 0.3);
+      border-color: rgba(255, 105, 180, 0.5);
+    }
+
+    .month-name {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    .month-emoji {
+      font-size: 60px;
+    }
+
+    /* Calendar View */
+    .calendar-view {
+      background: linear-gradient(135deg, #FFE5EC 0%, #E8F5FF 50%, #F0E8FF 100%);
+      min-height: 100%;
+      width: 100%;
+      display: none;
+      padding: 40px 20px;
+      animation: gradientShift 12s ease infinite;
+      background-size: 200% 200%;
+    }
+
+    .calendar-view.active {
+      display: block;
+      animation: slideIn 0.5s ease;
+    }
+
+    .calendar-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .calendar-title {
+      font-size: 48px;
+      margin: 0;
+      color: #333;
+    }
+
+    .back-btn {
+      background: linear-gradient(135deg, #A6E3FF, #7AC7FF);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .calendar-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.3); /* transparent white */
+  backdrop-filter: blur(px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-radius: 20px;
+  padding: 30px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      color: #666;
+      padding: 10px;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      font-size: 18px;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .day:hover {
+      transform: scale(1.1);
+      background: rgba(255, 105, 180, 0.1);
+    }
+
+    .day.empty {
+      cursor: default;
+    }
+
+    .day.empty:hover {
+      transform: none;
+      background: none;
+    }
+
+    .day.event::after {
+      content: '⭐';
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      font-size: 14px;
+      animation: twinkle 1.5s infinite;
+    }
+
+    /* Month Logo Animation Overlays */
+    .month-logo-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .month-logo-overlay.active {
+      display: flex;
+    }
+
+    .month-logo {
+      font-size: 200px;
+      animation: logoEntrance 2s ease;
+    }
+
+    @keyframes logoEntrance {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(-180deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(10deg);
+      }
+      70% {
+        transform: scale(0.9) rotate(-5deg);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.5) rotate(0deg);
+      }
+    }
+
+    /* Specific month animations */
+    .heart-burst {
+      animation: heartBurst 2s ease;
+    }
+
+    @keyframes heartBurst {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+      30% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+      50% {
+        transform: scale(1) rotate(10deg);
+      }
+      70% {
+        transform: scale(1.1) rotate(-10deg);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.3);
+      }
+    }
+
+    .snowflake-spin {
+      animation: snowflakeSpin 2s ease;
+    }
+
+    @keyframes snowflakeSpin {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(360deg);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.5) rotate(720deg);
+      }
+    }
+
+    .flower-bloom {
+      animation: flowerBloom 2s ease;
+    }
+
+    @keyframes flowerBloom {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(-90deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.3) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.4) rotate(90deg);
+      }
+    }
+
+    .sun-rise {
+      animation: sunRise 2s ease;
+    }
+
+    @keyframes sunRise {
+      0% {
+        opacity: 0;
+        transform: translateY(200px) scale(0.5);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0) scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(0.8);
+      }
+    }
+
+    .wave-splash {
+      animation: waveSplash 2s ease;
+    }
+
+    @keyframes waveSplash {
+      0% {
+        opacity: 0;
+        transform: scale(0) translateY(100px);
+      }
+      40% {
+        opacity: 1;
+        transform: scale(1.2) translateY(-20px);
+      }
+      60% {
+        transform: scale(1) translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.5) translateY(50px);
+      }
+    }
+
+    .leaf-fall {
+      animation: leafFall 2s ease;
+    }
+
+    @keyframes leafFall {
+      0% {
+        opacity: 0;
+        transform: translateY(-200px) rotate(-180deg) scale(0.5);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg) scale(1.2);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100px) rotate(180deg) scale(0.8);
+      }
+    }
+
+    .pumpkin-bounce {
+      animation: pumpkinBounce 2s ease;
+    }
+
+    @keyframes pumpkinBounce {
+      0% {
+        opacity: 0;
+        transform: translateY(-300px) scale(0.3);
+      }
+      30% {
+        opacity: 1;
+        transform: translateY(0) scale(1.2);
+      }
+      45% {
+        transform: translateY(-50px) scale(1.1);
+      }
+      60% {
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100px) scale(0.5);
+      }
+    }
+
+    .tree-grow {
+      animation: treeGrow 2s ease;
+    }
+
+    @keyframes treeGrow {
+      0% {
+        opacity: 0;
+        transform: scaleY(0) translateY(100px);
+      }
+      50% {
+        opacity: 1;
+        transform: scaleY(1.2) translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scaleY(0.5) translateY(-50px);
+      }
+    }
+
+    /* Event Popup Modal */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    .popup-content {
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFF0F8 30%, #F0E8FF 70%, #E8F5FF 100%);
+      border-radius: 25px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 15px 50px rgba(255, 20, 147, 0.3), 0 0 80px rgba(138, 43, 226, 0.2);
+      animation: popIn 0.4s ease;
+      position: relative;
+      border: 3px solid rgba(255, 182, 217, 0.5);
+    }
+
+    .popup-emoji {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: bounce 1s infinite;
+    }
+
+    .popup-title {
+      font-size: 32px;
+      color: #333;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+
+    .popup-message {
+      font-size: 20px;
+      color: #666;
+      line-height: 1.6;
+      margin: 20px 0;
+    }
+
+    .popup-close-btn {
+      background: linear-gradient(135deg, #FF69B4, #FF1493);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .popup-close-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 20, 147, 0.4);
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Falling Stickers */
+    .falling-sticker {
+      position: fixed;
+      font-size: 30px;
+      pointer-events: none;
+      z-index: 1000;
+      animation: fall linear;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes fall {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(120vh) rotate(360deg);
+  }
+}
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    /* 🌟 Creator Badge */
+.creator-badge {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-radius: 20px;
+  z-index: 2000;
+  pointer-events: none; /* won't block clicks */
+
+  animation: floatBadge 4s ease-in-out infinite;
+}
+
+.creator-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 105, 180, 0.8);
+  animation: glowText 2s ease-in-out infinite alternate;
+}
+
+.creator-sticker {
+  font-size: 20px;
+  animation: spinSticker 3s linear infinite;
+}
+
+/* Animations */
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes glowText {
+  from {
+    text-shadow: 0 0 6px rgba(255, 105, 180, 0.6);
+  }
+  to {
+    text-shadow: 0 0 14px rgba(255, 182, 193, 1);
+  }
+}
+
+@keyframes spinSticker {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    transform: rotate(360deg) scale(1.1);
+  }
+}
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+
+  <!-- Creator Badge -->
+<div class="creator-badge">
+  <span class="creator-sticker">✨</span>
+  <span class="creator-name">90s_rahl</span>
+</div>
+
+    <!-- 🎵 Background Music -->
+<audio id="bgMusic" loop>
+  <source src="Her.mp3" type="audio/mpeg">
+</audio>
+
+  <div class="page-wrapper"><!-- Welcome Page -->
+   <div class="welcome-page" id="welcomePage">
+    <div class="audio-controls"><button class="audio-btn" id="playPauseBtn" aria-label="Play/Pause music">▶️</button> <button class="audio-btn" id="muteBtn" aria-label="Mute/Unmute">🔊</button>
+     <div class="volume-control"><span>🎵</span> <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" aria-label="Volume control">
+     </div>
+    </div>
+    <div class="welcome-content">
+     <h1 class="year-display">🌟2026🌟</h1>
+     <p class="welcome-text" id="welcomeText">Welcome to 2026</p>
+     <p class="wish-text" id="wishText">Wishing you a wonderful year ahead💖</p><button class="enter-btn" id="enterBtn">Enter Calendar ✨</button>
+    </div>
+   </div><!-- Month Selection Page -->
+   <div class="month-page" id="monthPage">
+    <button class="back-btn" id="backToWelcome">← Back</button>
+    <div class="month-grid" id="monthGrid"></div>
+   </div><!-- Calendar View -->
+   <div class="calendar-view" id="calendarView">
+    <div class="calendar-header">
+     <h2 class="calendar-title" id="calendarTitle"></h2><button class="back-btn" id="backBtn">← Back to Months</button>
+    </div>
+    <div class="calendar-grid">
+     <div class="weekdays">
+      <div class="weekday">
+       Sun
+      </div>
+      <div class="weekday">
+       Mon
+      </div>
+      <div class="weekday">
+       Tue
+      </div>
+      <div class="weekday">
+       Wed
+      </div>
+      <div class="weekday">
+       Thu
+      </div>
+      <div class="weekday">
+       Fri
+      </div>
+      <div class="weekday">
+       Sat
+      </div>
+     </div>
+     <div class="days" id="daysGrid"></div>
+    </div>
+   </div>
+  </div><!-- Event Popup -->
+  <div class="popup-overlay" id="popupOverlay">
+   <div class="popup-content">
+    <div class="popup-emoji" id="popupEmoji">
+     🎉
+    </div>
+    <h3 class="popup-title" id="popupTitle">Special Day!</h3>
+    <p class="popup-message" id="popupMessage">Have a wonderful day!</p><button class="popup-close-btn" id="popupCloseBtn">Close ✨</button>
+   </div>
+  </div><!-- Month Logo Animation Overlay -->
+  <div class="month-logo-overlay" id="monthLogoOverlay">
+   <div class="month-logo" id="monthLogo">
+    ❄️
+   </div>
+  </div>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script>
+    const defaultConfig = {
+      welcome_message: "Welcome to 2026!",
+      wish_message: "Wishing you a wonderful year ahead!",
+      enter_button_text: "Enter Calendar ✨"
+    };
+
+    const months = [
+      { name: 'January', emoji: '❄️', color: '#E3F2FD', days: 31, animation: 'snowflake-spin' },
+      { name: 'February', emoji: '💝', color: '#FCE4EC', days: 28, animation: 'heart-burst' },
+      { name: 'March', emoji: '🌸', color: '#F3E5F5', days: 31, animation: 'flower-bloom' },
+      { name: 'April', emoji: '🌷', color: '#FFF3E0', days: 30, animation: 'flower-bloom' },
+      { name: 'May', emoji: '🌺', color: '#E8F5E9', days: 31, animation: 'flower-bloom' },
+      { name: 'June', emoji: '☀️', color: '#FFF9C4', days: 30, animation: 'sun-rise' },
+      { name: 'July', emoji: '🌊', color: '#E1F5FE', days: 31, animation: 'wave-splash' },
+      { name: 'August', emoji: '🍉', color: '#FFEBEE', days: 31, animation: 'sun-rise' },
+      { name: 'September', emoji: '🍂', color: '#FBE9E7', days: 30, animation: 'leaf-fall' },
+      { name: 'October', emoji: '🎃', color: '#FFF3E0', days: 31, animation: 'pumpkin-bounce' },
+      { name: 'November', emoji: '🍁', color: '#EFEBE9', days: 30, animation: 'leaf-fall' },
+      { name: 'December', emoji: '🎄', color: '#E8F5E9', days: 31, animation: 'tree-grow' }
+    ];
+    
+    const monthImages = [
+     "jan.jpg", // January
+     "feb.jpg", // February
+     "mar.jpg", // March
+     "apr.jpg", // April
+     "may.jpg", // May
+     "jun.jpg", // June
+     "jul.jpg", // July
+     "aug.jpg", // August
+     "sep.jpg", // September
+     "oct.jpg", // October
+     "nov.jpg", // November
+     "dec.jpg"  // December
+    ];
+
+    // 🔄 Preload month background images (Netlify fix)
+const preloadedImages = [];
+
+monthImages.forEach(src => {
+  const img = new Image();
+  img.src = src;
+  preloadedImages.push(img);
+});
+
+    // Indian festivals in 2026
+    const indianEvents = {
+      0: [1, 14, 26], // January: New Year, Makar Sankranti, Republic Day
+      1: [12, 19], // February: Maha Shivaratri, Holi
+      2: [11, 30], // March: Ugadi, Ram Navami
+      3: [6, 14, 21], // April: Mahavir Jayanti, Baisakhi, Hanuman Jayanti
+      4: [12, 26], // May: Buddha Purnima, Eid
+      5: [29], // June: Rath Yatra
+      6: [], // July
+      7: [3, 15, 22], // August: Friendship Day, Independence Day, Janmashtami
+      8: [5, 17, 25], // September: Teachers Day, Ganesh Chaturthi, Navaratri starts
+      9: [2, 20, 24], // October: Gandhi Jayanti, Dussehra, Diwali
+      10: [5, 14, 19], // November: Govardhan Puja, Children's Day, Guru Nanak Jayanti
+      11: [25] // December: Christmas
+    };
+
+    // Event details with emojis and messages
+    const eventDetails = {
+      '0-1': { name: 'New Year', emoji: '🎊', message: 'Happy New Year 2026! May this year bring you joy, success, and wonderful memories!' },
+      '0-14': { name: 'Makar Sankranti', emoji: '🪁', message: 'Happy Makar Sankranti! May the sun bring brightness and warmth to your life!' },
+      '0-26': { name: 'Republic Day', emoji: '🇮🇳', message: 'Happy Republic Day! Let\'s celebrate the spirit of democracy and unity!' },
+      '1-12': { name: 'Maha Shivaratri', emoji: '🕉️', message: 'Om Namah Shivaya! May Lord Shiva bless you with peace and prosperity!' },
+      '1-19': { name: 'Holi', emoji: '🎨', message: 'Happy Holi! May your life be as colorful and joyful as the festival of colors!' },
+      '2-11': { name: 'Ugadi', emoji: '🌺', message: 'Happy Ugadi! Wishing you a prosperous and blessed new year!' },
+      '2-30': { name: 'Ram Navami', emoji: '🏹', message: 'Jai Shri Ram! May Lord Rama bless you with strength and righteousness!' },
+      '3-6': { name: 'Mahavir Jayanti', emoji: '🙏', message: 'Happy Mahavir Jayanti! May the teachings of Lord Mahavir guide your path!' },
+      '3-14': { name: 'Baisakhi', emoji: '🌾', message: 'Happy Baisakhi! May your life be filled with abundance and happiness!' },
+      '3-21': { name: 'Hanuman Jayanti', emoji: '🐒', message: 'Jai Hanuman! May Bajrangbali bless you with courage and devotion!' },
+      '4-12': { name: 'Buddha Purnima', emoji: '☸️', message: 'Happy Buddha Purnima! May peace and enlightenment be with you!' },
+      '4-26': { name: 'Eid', emoji: '🌙', message: 'Eid Mubarak! May this day bring joy, peace, and prosperity to you and your family!' },
+      '5-29': { name: 'Rath Yatra', emoji: '🛕', message: 'Jai Jagannath! May Lord Krishna\'s blessings be with you always!' },
+      '7-3': { name: 'Friendship Day', emoji: '👫', message: 'Happy Friendship Day! Celebrate the beautiful bonds of friendship!' },
+      '7-15': { name: 'Independence Day', emoji: '🇮🇳', message: 'Happy Independence Day! Proud to be an Indian! Jai Hind!' },
+      '7-22': { name: 'Janmashtami', emoji: '🦚', message: 'Happy Janmashtami! May little Krishna fill your life with love and joy!' },
+      '8-5': { name: 'Teachers Day', emoji: '📚', message: 'Happy Teachers Day! Thank you to all the wonderful teachers who shape our future!' },
+      '8-17': { name: 'Ganesh Chaturthi', emoji: '🐘', message: 'Ganpati Bappa Morya! May Lord Ganesha remove all obstacles from your path!' },
+      '8-25': { name: 'Navaratri', emoji: '💃', message: 'Happy Navaratri! May Maa Durga bless you with strength and victory!' },
+      '9-2': { name: 'Gandhi Jayanti', emoji: '🕊️', message: 'Happy Gandhi Jayanti! Let\'s follow the path of truth and non-violence!' },
+      '9-20': { name: 'Dussehra', emoji: '⚔️', message: 'Happy Dussehra! May good always triumph over evil in your life!' },
+      '9-24': { name: 'Diwali', emoji: '🪔', message: 'Happy Diwali! May the festival of lights illuminate your life with joy and prosperity!' },
+      '10-5': { name: 'Govardhan Puja', emoji: '🌄', message: 'Happy Govardhan Puja! May Krishna\'s blessings bring happiness to your home!' },
+      '10-14': { name: 'Children\'s Day', emoji: '🎈', message: 'Happy Children\'s Day! Keep the child in you alive forever!' },
+      '10-19': { name: 'Guru Nanak Jayanti', emoji: '⭐', message: 'Happy Guru Nanak Jayanti! May the Guru\'s teachings light your path!' },
+      '11-25': { name: 'Christmas', emoji: '🎄', message: 'Merry Christmas! May Santa bring you lots of joy and wonderful gifts!' }
+    };
+
+    // Daily wishes for days without events
+    const dailyWishes = [
+      { emoji: '🌟', message: 'Today is a perfect day to make beautiful memories!' },
+      { emoji: '💫', message: 'May your day sparkle with moments of joy and laughter!' },
+      { emoji: '🌈', message: 'Wishing you a rainbow of happiness today!' },
+      { emoji: '🦋', message: 'Embrace the beauty of this day like a butterfly!' },
+      { emoji: '🌸', message: 'May your day bloom with wonderful opportunities!' },
+      { emoji: '✨', message: 'Let your light shine bright today!' },
+      { emoji: '🎈', message: 'Float through this day with happiness and positivity!' },
+      { emoji: '🌺', message: 'May this day bring you peace and serenity!' },
+      { emoji: '💖', message: 'Sending you love and positive vibes for today!' },
+      { emoji: '🌻', message: 'May your day be as bright as sunshine!' },
+      { emoji: '🎨', message: 'Paint your day with colors of joy and creativity!' },
+      { emoji: '🎵', message: 'Let the music of happiness fill your day!' },
+      { emoji: '🌙', message: 'Dream big and make today magical!' },
+      { emoji: '⭐', message: 'You are a star! Shine bright today!' },
+      { emoji: '🍀', message: 'Wishing you good luck and wonderful surprises today!' }
+    ];
+
+    function onConfigChange(config) {
+      document.getElementById('welcomeText').textContent = config.welcome_message || defaultConfig.welcome_message;
+      document.getElementById('wishText').textContent = config.wish_message || defaultConfig.wish_message;
+      document.getElementById('enterBtn').textContent = config.enter_button_text || defaultConfig.enter_button_text;
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: onConfigChange,
+        mapToCapabilities: () => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['welcome_message', config.welcome_message || defaultConfig.welcome_message],
+          ['wish_message', config.wish_message || defaultConfig.wish_message],
+          ['enter_button_text', config.enter_button_text || defaultConfig.enter_button_text]
+        ])
+      });
+    }
+
+    // 🎵 REAL Background Music Control
+const bgMusic = document.getElementById("bgMusic");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const muteBtn = document.getElementById("muteBtn");
+const volumeSlider = document.getElementById("volumeSlider");
+
+// default volume
+bgMusic.volume = 0.2;   // 20% volume
+volumeSlider.value = 20;
+
+// ▶️ Play / Pause
+playPauseBtn.addEventListener("click", () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    playPauseBtn.textContent = "⏸️";
+  } else {
+    bgMusic.pause();
+    playPauseBtn.textContent = "▶️";
+  }
+});
+
+// 🔇 Mute / Unmute
+muteBtn.addEventListener("click", () => {
+  bgMusic.muted = !bgMusic.muted;
+  muteBtn.textContent = bgMusic.muted ? "🔇" : "🔊";
+});
+
+// 🎚️ Volume Slider
+volumeSlider.addEventListener("input", (e) => {
+  bgMusic.volume = e.target.value / 100;
+});
+
+    // Navigation
+    document.getElementById("backToWelcome").addEventListener("click", () => {
+      document.getElementById("monthPage").classList.remove("active");
+      document.getElementById("welcomePage").style.display = "flex";
+    });
+
+    document.getElementById('enterBtn').addEventListener('click', () => {
+      document.getElementById('welcomePage').style.display = 'none';
+      document.getElementById('monthPage').classList.add('active');
+      renderMonths();
+    });
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      document.getElementById('calendarView').classList.remove('active');
+      document.getElementById('monthPage').classList.add('active');
+    });
+
+    function renderMonths() {
+      const monthGrid = document.getElementById('monthGrid');
+      monthGrid.innerHTML = '';
+
+      months.forEach((month, index) => {
+        const card = document.createElement('div');
+        card.className = 'month-card';
+        card.style.background = month.color;
+        card.innerHTML = `
+          <div class="month-emoji">${month.emoji}</div>
+          <div class="month-name">${month.name}</div>
+        `;
+        card.addEventListener('click', () => showCalendar(index));
+        monthGrid.appendChild(card);
+      });
+    }
+
+    function showCalendar(monthIndex) {
+      const month = months[monthIndex];
+      
+      // Show month logo animation
+      showMonthLogoAnimation(month.emoji, month.animation);
+      
+      // Delay showing calendar until animation completes
+      setTimeout(() => {
+        document.getElementById('monthPage').classList.remove('active');
+        document.getElementById('calendarView').classList.add('active');
+
+        document.getElementById('calendarTitle').textContent = `${month.name} 2026 ${month.emoji}`;
+        const calendarView = document.getElementById("calendarView");
+
+        calendarView.style.background =
+        `url("${monthImages[monthIndex]}") no-repeat center center fixed`;
+
+        calendarView.style.backgroundSize = "cover";
+
+        renderCalendar(monthIndex);
+      }, 2000);
+    }
+
+    function showMonthLogoAnimation(emoji, animationClass) {
+      const overlay = document.getElementById('monthLogoOverlay');
+      const logo = document.getElementById('monthLogo');
+      
+      logo.textContent = emoji;
+      logo.className = 'month-logo ' + animationClass;
+      overlay.classList.add('active');
+      
+      setTimeout(() => {
+        overlay.classList.remove('active');
+      }, 2000);
+    }
+
+    function renderCalendar(monthIndex) {
+      const daysGrid = document.getElementById('daysGrid');
+      daysGrid.innerHTML = '';
+
+      const firstDay = new Date(2026, monthIndex, 1).getDay();
+      const daysInMonth = months[monthIndex].days;
+      const events = indianEvents[monthIndex] || [];
+
+      for (let i = 0; i < firstDay; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'day empty';
+        daysGrid.appendChild(emptyDay);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'day';
+        dayDiv.textContent = day;
+
+        if (events.includes(day)) {
+          dayDiv.classList.add('event');
+        }
+
+        dayDiv.addEventListener('click', () => showPopup(monthIndex, day));
+
+        daysGrid.appendChild(dayDiv);
+      }
+    }
+
+    function showPopup(monthIndex, day) {
+      const eventKey = `${monthIndex}-${day}`;
+      const popup = document.getElementById('popupOverlay');
+      const popupEmoji = document.getElementById('popupEmoji');
+      const popupTitle = document.getElementById('popupTitle');
+      const popupMessage = document.getElementById('popupMessage');
+
+      if (eventDetails[eventKey]) {
+        const event = eventDetails[eventKey];
+        popupEmoji.textContent = event.emoji;
+        popupTitle.textContent = event.name;
+        popupMessage.textContent = event.message;
+      } else {
+        const randomWish = dailyWishes[Math.floor(Math.random() * dailyWishes.length)];
+        popupEmoji.textContent = randomWish.emoji;
+        popupTitle.textContent = `${months[monthIndex].name} ${day}, 2026`;
+        popupMessage.textContent = randomWish.message;
+      }
+
+      popup.classList.add('active');
+    }
+
+    document.getElementById('popupCloseBtn').addEventListener('click', () => {
+      document.getElementById('popupOverlay').classList.remove('active');
+    });
+
+    document.getElementById('popupOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('popupOverlay')) {
+        document.getElementById('popupOverlay').classList.remove('active');
+      }
+    });
+
+    // Falling Stickers
+    const stickers = ['✨', '🌸', '🌟', '💖', '🦋', '🌈', '⭐', '💝'];
+
+    function createFallingSticker() {
+      const sticker = document.createElement('div');
+      sticker.className = 'falling-sticker';
+      sticker.textContent = stickers[Math.floor(Math.random() * stickers.length)];
+      sticker.style.left = Math.random() * 100 + '%';
+      sticker.style.top = "-50px";          // start above screen
+      sticker.style.animationName = "fall"; // force animation
+      sticker.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      document.body.appendChild(sticker);
+
+      setTimeout(() => {
+        sticker.remove();
+      }, 7000);
+    }
+
+   let monthStickerInterval;
+
+function startMonthStickers() {
+  if (monthStickerInterval) return;
+  monthStickerInterval = setInterval(createFallingSticker, 600);
+}
+
+function stopMonthStickers() {
+  clearInterval(monthStickerInterval);
+  monthStickerInterval = null;
+}
+
+startMonthStickers();
+
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b9325b2e5e29a95',t:'MTc2NzYxNzkwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
